@@ -1,0 +1,16 @@
+{
+  "name": "ldap-in-nodejs",
+  "version": "1.0.0",
+  "main": "index.js",
+  "repository": "https://github.com/blaiseirakoze/ldap-in-nodejs.git",
+  "author": "Blaise Irakoze <birakoze@qtsoftwareltd.com>",
+  "license": "MIT",
+  "scripts": {
+    "start": "node index.js"
+  },
+  "dependencies": {
+    "express": "^4.17.3",
+    "ldapjs": "^2.3.2",
+    "prettier": "^2.6.2"
+  }
+}
