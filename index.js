@@ -10,7 +10,7 @@ const client = ldap.createClient({
     url: ["ldap://127.0.0.1:10389"],
 });
 
-//authantication
+// authantication
 function authentication(username, password) {
     client.bind(username, password, (err) => {
         if (err) {
@@ -20,7 +20,11 @@ function authentication(username, password) {
             // searchUser();
             // createUser();
             // deleteUser();
-            addUserToGroup("cn=Administrators,ou=groups,ou=system");
+            // addUserToGroup("cn=Administrators,ou=groups,ou=system");
+            // deleteUserFromGroup("cn=Administrators,ou=groups,ou=system");
+            // updateUser('cn=test,ou=users,ou=system');
+            compare("cn=blaise,ou=users,ou=system");
+            // modifyDN("cn=bar,ou=users,ou=system");
         }
     });
 }
@@ -97,6 +101,65 @@ function addUserToGroup(groupname) {
             console.log("err in add user in a group ------------------" + err);
         } else {
             console.log("added user in a group");
+        }
+    });
+}
+
+/*use this to delete user from group*/
+function deleteUserFromGroup(groupname) {
+    var change = new ldap.Change({
+        operation: "delete",
+        modification: {
+            uniqueMember: "cn=blaise,ou=users,ou=system",
+        },
+    });
+
+    client.modify(groupname, change, function (err) {
+        if (err) {
+            console.log("err in delete  user in a group " + err);
+        } else {
+            console.log("deleted  user from a group");
+        }
+    });
+}
+
+/*use this to update user attributes*/
+function updateUser(dn) {
+    var change = new ldap.Change({
+        operation: "add", //use add to add new attribute
+        //operation: 'replace', // use replace to update the existing attribute
+        modification: {
+            displayName: "657",
+        },
+    });
+
+    client.modify(dn, change, function (err) {
+        if (err) {
+            console.log("err in update user " + err);
+        } else {
+            console.log("add update user");
+        }
+    });
+}
+
+/*use this to compare user is already existed or not*/
+function compare(dn) {
+    client.compare(dn, "sn", "irakoze", function (err, matched) {
+        if (err) {
+            console.log("err in update user " + err);
+        } else {
+            console.log("result :" + matched);
+        }
+    });
+}
+
+/*use this to modify the dn of existing user*/
+function modifyDN(dn) {
+    client.modifyDN(dn, "cn=ba4r", function (err) {
+        if (err) {
+            console.log("err in update user " + err);
+        } else {
+            console.log("result :");
         }
     });
 }
