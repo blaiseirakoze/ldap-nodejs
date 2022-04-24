@@ -17,13 +17,16 @@ function authentication(username, password) {
             console.log("error: ", err);
         } else {
             console.log("connection success");
+            // searchUser();
+            // createUser();
+            deleteUser();
         }
     });
 }
 authentication("uid=admin,ou=system", "secret");
 
 // search a user
-function search() {
+function searchUser() {
     const opts = {
         filter: "(objectClass=*)",
         scope: "sub",
@@ -51,4 +54,30 @@ function search() {
         }
     });
 }
-search();
+
+// create user
+function createUser() {
+    const entry = {
+        sn: "nadine",
+        // email: ["foo@bar.com", "foo1@bar.com"],
+        objectclass: "inetOrgPerson",
+    };
+    client.add("cn=cyuzuzo,ou=users,ou=system", entry, (err) => {
+        if (err) {
+            console.log("error adding ---------------------- ", err);
+        } else {
+            console.log("user created successfully");
+        }
+    });
+}
+
+// delete user
+function deleteUser() {
+    client.del("cn=cyuzuzo,ou=users,ou=system", (err) => {
+        if (err) {
+            console.log("error deleting ---------------------- ", err);
+        } else {
+            console.log("user deleted successfully");
+        }
+    });
+}
